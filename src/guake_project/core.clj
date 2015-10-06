@@ -1,21 +1,32 @@
 (ns guake-project.core
-  (:require [clojure.tools.cli :refer [cli parse-opts]])
-  (:gen-class))
+  (:require [clojure.tools.cli :as cli]))
 
-(def cli-options
+(defn create-project 
+  [name]
+  (print name))
+
+(defn update-project 
+  []
+  (print name))
+
+(defn open-project
+  [name]
+  (print name))
+
+(defn list-projects []
+  (print "list"))
+
+(def options
   ;; An option with a required argument
-  [["-p" "--port PORT" "Port number"
-    :default 80
-    :parse-fn #(Integer/parseInt %)
-    :validate [#(< 0 % 0x10000) "Must be a number between 0 and 65536"]]
-   ;; A non-idempotent option
-   ["-v" nil "Verbosity level"
-    :id :verbosity
-    :default 0
-    :assoc-fn (fn [m k _] (update-in m [k] inc))]
-   ;; A boolean option defaulting to nil
-   ["-h" "--help" "Help"]])
+  [["-c" "--create PROJECT_NAME" "Create project"
+    :parse-fn create-project]
+   ["-c" "--update" "Update project"
+    :parse-fn update-project]
+   ["-o" "--open PROJECT_NAME" "Open project"
+    :parse-fn open-project]
+   ["-l" "--list" "List all projects"]
+    :parse-fn list-projects])
 
 (defn -main [& args]
-  (parse-opts args cli-options)
-  (print (str args)))
+  (cli/parse-opts args options))
+
