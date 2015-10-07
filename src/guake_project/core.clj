@@ -23,7 +23,7 @@
   ;; An option with a required argument
   [["-c" "--create PROJECT_NAME" "Create project"
     :parse-fn create-project]
-   ["-c" "--update" "Update project"
+   ["-u" "--update" "Update project"
     :parse-fn update-project]
    ["-o" "--open PROJECT_NAME" "Open project"
     :parse-fn open-project]
