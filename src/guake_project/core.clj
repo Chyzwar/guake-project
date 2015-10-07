@@ -3,10 +3,13 @@
 
 (defn create-project 
   [name]
-  (print name))
+  (do 
+    (print name)
+    (let [phrase (read-line)]
+          (println (str "You typed " phrase)))))
 
 (defn update-project 
-  []
+  [name]
   (print name))
 
 (defn open-project
@@ -24,8 +27,8 @@
     :parse-fn update-project]
    ["-o" "--open PROJECT_NAME" "Open project"
     :parse-fn open-project]
-   ["-l" "--list" "List all projects"]
-    :parse-fn list-projects])
+   ["-l" "--list" "List all projects"
+    :parse-fn list-projects]])
 
 (defn -main [& args]
   (cli/parse-opts args options))
