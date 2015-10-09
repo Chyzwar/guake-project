@@ -1,12 +1,26 @@
 (ns guake-project.core
   (:require [clojure.tools.cli :as cli]))
 
-(defn create-project 
-  [name]
-  (do 
-    (print name)
-    (let [phrase (read-line)]
-          (println (str "You typed " phrase)))))
+(defn read-property
+  [question]
+  (print (str question))
+  (flush)
+  (read-line))
+
+(defn read-tabs
+  []
+  (let [tabs []]
+  (defn new-tab []
+    (read-property "Tab title (optional): "))
+  (conj tabs (new-tab))))
+
+(defn create-project
+  [project-name]
+  (let [project
+        {:name project-name
+         :base-dir (read-property "Base Directory: ")
+         :project-tabs (read-tabs)}]
+    (println (str project))))
 
 (defn update-project 
   [name]
