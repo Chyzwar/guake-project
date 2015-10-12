@@ -1,24 +1,44 @@
 (ns guake-project.core
   (:require [clojure.tools.cli :as cli]))
 
-(defn read-property
+(defn read-input
+  "read input from stdin"
   [question]
   (print (str question))
   (flush)
   (read-line))
 
+(defn read-commands
+  []
+  (println "Provide list of commands to be excecuted (optional)")
+  (let [commands (atom [])]
+    (def is-enough (atom false))
+    
+    (while (false? @is-enough)
+      (do
+        (swap! commands conj (read-input "command: "))
+        (if (= "no" (read-input "Additional command (yes/no) "))
+          (swap! is-enough true))))
+    
+    (print @commands)
+    (@commands)))
+
 (defn read-tabs
   []
-  (let [tabs []]
-  (defn new-tab []
-    (read-property "Tab title (optional): "))
-  (conj tabs (new-tab))))
+  (let [tabs (atom [])]
+    (defn new-tab []
+      ({:tab-title (read-input "Tab title (optional): ")
+        :tab-path-affix (read-input "Additional path affix(optional) ")
+        :commands-seq (read-commands)}))
+    
+    (swap! tabs conj (new-tab))
+    (print tabs)))
 
 (defn create-project
   [project-name]
   (let [project
         {:name project-name
-         :base-dir (read-property "Base Directory: ")
+         :base-dir (read-input "Base Directory path: ")
          :project-tabs (read-tabs)}]
     (println (str project))))
 
